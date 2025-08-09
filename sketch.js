@@ -45,6 +45,37 @@ function preload() {
 }
 
 function setup() {
+    
+// Firebase user data
+  auth.onAuthStateChanged(function(user){
+    if(user){
+      var uid = user.uid;
+      var userRef = database.ref('users/'+uid);
+
+      userRef.once('value').then(snapshot=>{
+        var data = snapshot.val() || {};
+        userName = data.name || "Friend";
+
+        var currentCount = data.loginCount || 0;
+        loginCount = currentCount + 1;
+
+        // update login count in DB
+        userRef.update({ 
+          loginCount: loginCount 
+        });
+      });
+
+      database.ref('users/'+uid+'/wasteLog').on('value', function(snapshot){
+        var logs = snapshot.val() || {};
+        updateStatsFromLogs(logs);
+      });
+    }
+    else{
+      window.location.replace("login.html");
+    }
+  });
+
+    //cont
   var isMobile= /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   if (isMobile) {
@@ -169,35 +200,6 @@ function setup() {
   });
 
   tipsArea.child(tipBox);
-
-      // Firebase user data
-  auth.onAuthStateChanged(function(user){
-    if(user){
-      var uid = user.uid;
-      var userRef = database.ref('users/'+uid);
-
-      userRef.once('value').then(snapshot=>{
-        var data = snapshot.val() || {};
-        userName = data.name || "Friend";
-
-        var currentCount = data.loginCount || 0;
-        loginCount = currentCount + 1;
-
-        // update login count in DB
-        userRef.update({ 
-          loginCount: loginCount 
-        });
-      });
-
-      database.ref('users/'+uid+'/wasteLog').on('value', function(snapshot){
-        var logs = snapshot.val() || {};
-        updateStatsFromLogs(logs);
-      });
-    }
-    else{
-      window.location.replace("login.html");
-    }
-  });
 
   createLogout();
   createBack();
