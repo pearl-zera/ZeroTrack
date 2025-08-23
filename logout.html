@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="./lib/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./lib/sweetalert.css" />
+
+    <title>Logging out...</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+       @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap'); /* A clean, modern sans-serif font */
+
+        body {
+            font-family: "Montserrat", sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 50px;
+            color: #1e3a24;
+            font-weight: 700;
+        }
+
+        img {
+            margin-top: 0;
+            width: 350px;   
+            height: auto;
+        }
+
+        #logo {
+            margin-top: 0;
+            margin-bottom: 50px;
+            width: 200px;   
+            height: auto;
+        }
+
+    </style>
+</head>
+<body>
+    <img id="logo" src="./assets/images/logo.png" alt="Logo">
+
+    <h1>Logging out...</h1>
+    <img src="./assets/images/logoutbg3.gif" alt="Loading...">
+
+ <script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDq_cQj5vTVHFgKnJ6OE7UwPPfDIqpy_gk",
+    authDomain: "zero-track.firebaseapp.com",
+    databaseURL: "https://zero-track-default-rtdb.firebaseio.com",
+    projectId: "zero-track",
+    storageBucket: "zero-track.firebasestorage.app",
+    messagingSenderId: "278544348006",
+    appId: "1:278544348006:web:e62fa713792141e9920ea7",
+    measurementId: "G-YLT6JB578D"
+  };
+    firebase.initializeApp(firebaseConfig);
+
+    firebase.auth().signOut().then(() => {
+      setTimeout(()=>{
+        swal("Logout successful", "Come back soon!", "success");
+      }, 2000)
+      setTimeout(()=>{
+        window.location.replace("index.html");
+      }, 4000);
+    })
+          .catch((error) => {
+        swal("Error", error.message, "error");
+      });
+  </script>
+</body>
+</html>
